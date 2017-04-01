@@ -28,7 +28,7 @@
                 url: "/api/events",
                 success: function (result) {
                     for (i = 0; i < result.length; i++) {
-                        $("#output tr:last").after("<tr><td>" + result[i].CardNumber + "</td><td>" + result[i].ATM1 + "</td><td>" + result[i].ATM2 + "</td></tr>");
+                        $("#output tr:last").after("<tr><td>" + result[i]["card number"] + "</td><td>" + result[i]["atm 1"] + "</td><td>" + result[i]["atm 2"] + "</td></tr>");
                     }
                 },
                 error: function (xhr, status, error) {

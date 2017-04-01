@@ -69,104 +69,108 @@ In this exercise, you will use [Visual Studio Code](https://code.visualstudio.co
     
 1. Add the following code and markup to the new file to serve as the main page for your Web site:
     
-    ```html
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>My Images</title>
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
-            integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" 
-            crossorigin="anonymous">
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" 
-            integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" 
-            crossorigin="anonymous">
-        <link rel="stylesheet" href="content/styles.css" type='text/css'>
-        
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" 
-            crossorigin="anonymous"></script>
-    
-    </head>
-    <body>
-        <div class="container-fluid bg-primary">
-            <div class="row col-md-12">
-                <h3>My Images</h3>
-            </div>
-        </div>
-    
-        <div class="navbar navbar-default">
-            <form class="navbar-form navbar-left" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                <div class="form-group">
-                    <label class="sr-only" for="imageToUpload">Image to Upload</label>
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <span class="btn btn-default btn-file" type="button">
-                                Image File:<input type="file" id="imageToUpload" name="imageToUpload">
-                            </span>
-                        </span>
-                        <input type="text" class="form-control" placeholder="Select a file to upload..." id="selectedFileName" readonly>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-default navbar-btn">Upload</button>
-                <?php
-                    if (isset($_FILES['imageToUpload'])) {
-                        include "images.php";
-                        try {
-                            $msg = Images::Upload();  // this will upload the image
-                            echo "<p class='navbar-text navbar-right'>".$msg."</p>";  // Message showing success or failure.
-                            }
-                        catch (Exception $e) {
-                            echo "<p class='navbar-text navbar-right text-danger'>"."Sorry, could not upload file".$e->getMessage()."</p>";
-                        }
-                    }
-                ?>
-            </form>
-        </div>
-        
-        <div class="container-fluid">
-            <div class="row">
-                <?php
-                    include "images.php";
-                    $images = Images::GetImages();
-                    foreach ($images as $image) {
-                ?>
-                    <div class='col-lg-2 col-md-4 col-sm-6 col-xs-12'>
-                        <?php
-                            echo "<a href='image_display.php?id=".$image->id."' target='_blank'>";
-                            echo "<img class='img-responsive' src='image_display.php?id=".$image->id."&width=192' alt='' />";
-                            echo "</a>";
-                        ?>
-                    </div>
-                <?php
-                    }
-                ?>
-            </div>
-        </div>
-    
-        <script type="text/javascript" language="javascript">
-            // Show name of selected image file in the text display in the custom UI element
-            $(document).ready(function () {
-                $(document).on('change', '.btn-file :file', function () {
-                    var input = $(this),
-                        numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-                    input.trigger('fileselect', [numFiles, label]);
-                })
-    
-                $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
-                    console.log(numFiles);
-                    console.log(label);
-                    $("#selectedFileName").val(label);
-                });
-            });
-        </script>
-    </body>
-    </html>
+    ```php
+	<!DOCTYPE html>
+	<html>
+	<head>
+	    <title>My Images</title>
+	    <!-- Latest compiled and minified CSS -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
+	        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" 
+	        crossorigin="anonymous">
+	    <!-- Optional theme -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" 
+	        integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" 
+	        crossorigin="anonymous">
+	    <link rel="stylesheet" href="content/styles.css" type='text/css'>
+	
+	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	    <!-- Latest compiled and minified JavaScript -->
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
+	        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" 
+	        crossorigin="anonymous"></script>
+	
+	</head>
+	<body>
+	    <div class="container-fluid bg-primary">
+	        <div class="row col-md-12">
+	            <h3>My Images</h3>
+	        </div>
+	    </div>
+	
+	    <div class="navbar navbar-default">
+	        <form class="navbar-form navbar-left" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+	            <div class="form-group">
+	                <label class="sr-only" for="imageToUpload">Image to Upload</label>
+	                <div class="input-group">
+	                    <span class="input-group-btn">
+	                        <span class="btn btn-default btn-file" type="button">
+	                            Image File:<input type="file" id="imageToUpload" name="imageToUpload">
+	                        </span>
+	                    </span>
+	                    <input type="text" class="form-control" placeholder="Select a file to upload..." id="selectedFileName" readonly>
+	                </div>
+	            </div>
+	            <button type="submit" class="btn btn-default navbar-btn">Upload</button>
+	            <?php
+	                if (isset($_FILES['imageToUpload'])) {
+	                    include "images.php";
+	                    try {
+	                        Images::Upload();  // upload the image
+	                    }
+	                    catch (Exception $e) { // upload failed
+	                        $msg = $e->getMessage();
+	                        echo '<script type="text/javascript">';
+	                        echo 'alert("'.$msg.'");';
+	                        echo 'window.location.href = "/";';
+	                        echo '</script>';
+	                        exit;
+	                    }
+	                }
+	            ?>
+	        </form>
+	    </div>
+	
+	    <div class="container-fluid">
+	        <div class="row">
+	            <?php
+	                include "images.php";
+	                $images = Images::GetImages();
+	                foreach ($images as $image) {
+	            ?>
+	                <div class='col-lg-2 col-md-4 col-sm-6 col-xs-12'>
+	                    <?php
+	                        echo "<a href='image_display.php?id=".$image->id."' target='_blank'>";
+	                        echo "<img class='img-responsive' src='image_display.php?id=".$image->id."&width=192' alt='' />";
+	                        echo "</a>";
+	                    ?>
+	                </div>
+	            <?php
+	                }
+	            ?>
+	        </div>
+	    </div>
+	
+	    <script type="text/javascript" language="javascript">
+	        // Show name of selected image file in the text display in the custom UI element
+	        $(document).ready(function () {
+	            $(document).on('change', '.btn-file :file', function () {
+	                var input = $(this),
+	                    numFiles = input.get(0).files ? input.get(0).files.length : 1,
+	                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+	                input.trigger('fileselect', [numFiles, label]);
+	            })
+	
+	            $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+	                console.log(numFiles);
+	                console.log(label);
+	                $("#selectedFileName").val(label);
+	            });
+	        });
+	    </script>
+	</body>
+	</html>
     ```
 
 1. Use the **File -> Save** command to save the file. Name it **index.php**.
@@ -175,7 +179,9 @@ In this exercise, you will use [Visual Studio Code](https://code.visualstudio.co
 
     _Saving the file_
     
-1. Repeat Steps 3 through 5 to add a file named **image_display.php** containing the following code to the project. This is the code that returns images requested by the browser over HTTP.
+1. Repeat Steps 4 through 6 to add a file named **image_display.php** containing the following code to the project. This is the code that returns images requested by the browser over HTTP.
+
+	> When pasting code such as this into a PHP file, be *certain* that the closing tag ("?>") on the last line has no extraneous spaces after it. Otherwise, the file will not execute.
 
     ```php
     <?php
@@ -229,77 +235,89 @@ In this exercise, you will use [Visual Studio Code](https://code.visualstudio.co
     ?>
     ```
 
-1. Repeat Steps 3 through 5 to add a file named **images.php** containing the following code to the project. This is the code used to upload, store, and retrieve images.
+1. Repeat Steps 4 through 6 to add a file named **images.php** containing the following code to the project. This is the code used to upload, store, and retrieve images.
 
     ```php
-    <?php
-        include "database.php";
-    
-        class Images {
-    
-            public static function Upload() {
-    
-                $maxsize = 10000000; // set to approx 10 MB
-    
-                // check associated error code
-                if ($_FILES['imageToUpload']['error'] == UPLOAD_ERR_OK) {
-    
-                    // check whether file is uploaded with HTTP POST
-                    if (is_uploaded_file($_FILES['imageToUpload']['tmp_name'])) {    
-    
-                        // check size of uploaded image on server side
-                        if ( $_FILES['imageToUpload']['size'] < $maxsize) {  
-    
-                            // check whether uploaded file is of image type
-                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                            if (strpos(finfo_file($finfo, $_FILES['imageToUpload']['tmp_name']), "image") === 0) {    
-    
-                                // open the image file for insertion
-                                $imagefp = fopen($_FILES['imageToUpload']['tmp_name'], 'rb');
-    
-                                // put the image in the db...
-                                $database = new Database();
-                                $id = $database->UploadImage($_FILES['imageToUpload']['name'], $imagefp);
-                                $msg = 'Image successfully saved in database with id = ' . $id;
-                            }
-                            else { 
-                                $msg = "Uploaded file is not an image.";
-                            }
-                        }
-                        else {
-                            // if the file is not less than the maximum allowed, print an error
-                            $msg = '<div>File exceeds the Maximum File limit</div>
-                                <div>Maximum File limit is '.$maxsize.' bytes</div>
-                                <div>File '.$_FILES['imageToUpload']['name'].' is '.$_FILES['imageToUpload']['size'].
-                                ' bytes</div><hr />';
-                        }
-                    }
-                    else
-                        $msg = "File not uploaded successfully.";
-    
-                }
-                else {
-                    $msg = file_upload_error_message($_FILES['imageToUpload']['error']);
-                }
-                return $msg;
-            }
-    
-            public static function GetImages() {
-                $database = new Database();
-                $images = $database->GetAllImages();
-                return $images;
-            }
-    
-            public static function GetImage($id) {
-                $database = new Database();
-                $image = $database->FindImage($id);
-                return $image;
-            }
-        }
-    ?>  
+	<?php
+	    include "database.php";
+	
+	    class Images {
+	
+	        public static function Upload() {
+	
+	            $maxsize = 4194304; // set to 4 MB
+	
+	            // check associated error code
+	            if ($_FILES['imageToUpload']['error'] == UPLOAD_ERR_OK) {
+	
+	                // check whether file is uploaded with HTTP POST
+	                if (is_uploaded_file($_FILES['imageToUpload']['tmp_name'])) {    
+	
+	                    // check size of uploaded image on server side
+	                    if ( $_FILES['imageToUpload']['size'] < $maxsize) {  
+	
+	                        // check whether uploaded file is of image type
+	                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+	                        if (strpos(finfo_file($finfo, $_FILES['imageToUpload']['tmp_name']), "image") === 0) {    
+	
+	                            // open the image file for insertion
+	                            $imagefp = fopen($_FILES['imageToUpload']['tmp_name'], 'rb');
+	
+	                            // put the image in the db...
+	                            $database = new Database();
+	                            $id = $database->UploadImage($_FILES['imageToUpload']['name'], $imagefp);
+	                            header("Location: /");
+	                            exit;
+	                        }
+	                        else { // not an image
+	                            echo '<script type="text/javascript">';
+	                            echo 'alert("Uploaded file is not an image");';
+	                            echo 'window.location.href = "/";';
+	                            echo '</script>';
+	                            exit;
+	                        }
+	                    }
+	                    else { // file too large
+	                        echo '<script type="text/javascript">';
+	                        echo 'alert("Uploaded file is too large");';
+	                        echo 'window.location.href = "/";';
+	                        echo '</script>';
+	                        exit;
+	                    }
+	                }
+	                else { // upload failed
+	                    echo '<script type="text/javascript">';
+	                    echo 'alert("File upload failed");';
+	                    echo 'window.location.href = "/";';
+	                    echo '</script>';
+	                    exit;
+	                }
+	            }
+	            else {
+	                echo '<script type="text/javascript">';
+	                echo 'alert("File upload failed");';
+	                echo 'window.location.href = "/";';
+	                echo '</script>';
+	                exit;
+	            }
+	        }
+	
+	        public static function GetImages() {
+	            $database = new Database();
+	            $images = $database->GetAllImages();
+	            return $images;
+	        }
+	
+	        public static function GetImage($id) {
+	            $database = new Database();
+	            $image = $database->FindImage($id);
+	            return $image;
+	        }
+	    }
+	?>
     ```
 
-1. Repeat Steps 3 through 5 to add a file named **database.php** containing the following code to the project. This is the code used to interact with the MySQL database. Observe that the database connection string isn't embedded in the code, but is instead retrieved from an environment variable named *MYSQLCONNSTR_defaultConnection*. The value of this approach will be explained in the next exercise.
+1. Repeat Steps 4 through 6 to add a file named **database.php** containing the following code to the project. This is the code used to interact with the MySQL database. Observe that the database connection string isn't embedded in the code, but is instead retrieved from an environment variable named ```MYSQLCONNSTR_localdb```. The purpose of this environment variable — and the manner in which it is initialized — is explained at the end of the next exercise.
 
     ```php
     <?php
@@ -310,7 +328,7 @@ In this exercise, you will use [Visual Studio Code](https://code.visualstudio.co
             public function __construct() {
                 // Notice that private connection information is *NOT* part of the source
                 // and therefore does not end up in public repos, etc.
-                $connectionString = getenv("MYSQLCONNSTR_defaultConnection");
+                $connectionString = getenv("MYSQLCONNSTR_localdb");
                 $varsString = str_replace(";","&", $connectionString);
                 parse_str($varsString);
     
@@ -392,7 +410,7 @@ In this exercise, you will use [Visual Studio Code](https://code.visualstudio.co
 
     _Adding a Content folder to the project_
      
-1. Repeat Steps 3 through 5 to add a file named **styles.css** containing the following CSS to the **Content** folder that you just created:
+1. Repeat Steps 4 through 6 to add a file named **styles.css** containing the following CSS to the **Content** folder that you just created:
 
     ```css
     /* Custom background color for the nav-bar element. */
@@ -485,7 +503,7 @@ There are several ways to provision an Azure Web App. In this exercise, you will
 
     _Creating a Web App with MySQL_
 
-1. Enter a name for your Web app in the **App name** field. *This name must be unique within Azure, so make sure a green check mark appears next to it*. Select **Create new** under **Resource Group** and enter the resource-group name "WebAppsLabResourceGroup" (without quotation marks). Then select **ClearDB** as the **Database Provider**.
+1. Enter a name for your Web app in the **App name** field. *This name must be unique within Azure, so make sure a green check mark appears next to it*. Select **Create new** under **Resource Group** and enter the resource-group name "WebAppsLabResourceGroup" (without quotation marks). Then select **MySQL In App** as the **Database Provider**.
 
 	> Resource groups are a powerful construct for grouping resources such as storage accounts, databases, and virtual machines together so they can be managed as a unit. Deleting a resource group deletes everything inside it and prevents you from having to delete those resources one by one.
 
@@ -493,21 +511,11 @@ There are several ways to provision an Azure Web App. In this exercise, you will
 
     _Configuring the Web App_
 
-1. Click **App Service plan/location**, and then click **Create New** to create a new App Service plan for your Web app. In the "App Service plan" blade, enter "WebAppsLabServicePlan" (without quotation marks) as the service-plan name and select the location nearest you. Then click **Pricing tier** and select the **F1 Free** tier. (You will have to click **View all** in the "Choose your pricing tier" blade and scroll to the bottom to see the **F1 Free** tier.) Click **Select** to finalize your tier selection, and then click **OK** in the "App Service plan" blade to create the new service plan.
+1. Click **App Service plan/location**, and then click **Create New** to create a new App Service plan for your Web app. In the "New App Service plan" blade, enter "WebAppsLabServicePlan" (without quotation marks) as the service-plan name and select the location nearest you. Then click **Pricing tier** and select the **F1 Free** tier. Click **Select** to finalize your tier selection, and then click **OK** in the "New App Service plan" blade to create the new service plan.
 
     ![Creating an App Service plan](Images/web-app-parameters-2.png)
 
     _Creating an App Service plan_
-
-1. Click **Database** in the "Web App + MySQL" blade, and then click **Create New** to create a new MySQL database to go with your Web app. Enter "webappslabdb" (without quotation marks) for the **Database Name**. Set **Database Type** to **Shared** and select the location nearest you. Then click **Pricing Tier**, select the **Mercury** tier, and click **Select** at the bottom of the blade.
-
-    ![Creating a MySQL database](Images/web-app-parameters-3.png)
-
-    _Creating a MySQL database_
-
-1. Click **Legal Terms** in the "New MySQL Database" blade. Review the legal terms and click **Purchase** at the bottom of the "Purchase" blade. Finish up by clicking **OK** at the bottom of the "New MySQL Database" blade.
-
-	> Nothing is actually being purchased since you selected the Mercury database tier, which is free. In order to provision the MySQL database for you, Azure requires that you acknowledge the terms of use.
 
 1. Check **Pin to Dashboard** at the bottom of the "Web App + MySQL" blade, and then click the **Create** button to create your Web app.
 
@@ -515,7 +523,7 @@ There are several ways to provision an Azure Web App. In this exercise, you will
 
     _Creating the Web App_
     
-1. Once the Web App has been created (it usually takes about one minute), click the tile that was created for it on the dashboard.
+1. Once the Web App has been created (it usually takes about one minute), click the tile that was created for it on the dashboard if the blade for the Web App doesn't open automatically.
 
 1. Click the Web site URL to browse to the placeholder page for your new Web site. 
 
@@ -529,25 +537,7 @@ There are several ways to provision an Azure Web App. In this exercise, you will
 
     _The Web site's temporary home page_
 
-1. Click **Application settings** in the blade for the Web app.
-
-    ![Viewing application settings](Images/application-settings.png)
-
-    _Viewing application settings_
-    
-1. Scroll down to the "App settings" and "Connection strings" sections. These sections allow you to define key-value pairs that the app can access at runtime. Specifying values such as these in the portal rather than embedding them in your code makes it easier to run the app in different environments and in different contexts, and also helps mitigate the risk of inadvertently uploading code containing database connection strings and other sensitive items to public source-code repositories.
-
-    > If you're curious about the **Slot setting** boxes, here's a quick explanation. In the Azure App Service, the _Basic_, _Standard_, and _Premium_ pricing tiers tiers allow you to provision multiple deployment slots for a given Web App. You can use these slots in several ways, including setting up pre-production staging environments for testing code changes before putting them into production. The **Slot setting** boxes allow you to specify whether a setting or connection string applies to all deployment slots or only to a particular deployment slot.
-
-1. By default, connection strings are hidden for security reasons. Click **Show connection string values** to reveal them.
-
-    ![Showing connection string values](Images/provision-showconnectionstrings.png)
-
-    _Showing connection string values_
-   
-1. Examine the **defaultConnection** value. It was automatically created when your Web App and MySQL database were provisioned. This is the value your application uses to connect to the MySQL database. It includes the server address (_Data Source_) for the database, the database name, and the user credentials for connecting to the database.
-
-Most platforms can access connection strings and app settings as environment variables. .NET applications can access them as if they were part of the application's web.config file. The PHP code that you added in [Exercise 1](#Exercise1) retrieves the default connection string by calling `getenv("MYSQLCONNSTR_defaultConnection");` You can find additional information about the conventions used to access these variables [here](https://azure.microsoft.com/en-us/blog/windows-azure-web-sites-how-application-strings-and-connection-strings-work/).
+When the app was provisioned, an in-app SQL database was provisioned for it, too. The PHP code that you added in [Exercise 1](#Exercise1) retrieves a connection string for the database by calling ```getenv("MYSQLCONNSTR_localdb");```. The environment variable ```MYSQLCONNSTR_localdb``` is created as part of the provisioning process and is created specifically for the purpose of connecting to in-app SQL databases.
     
 <a name="Exercise3"></a>
 ## Exercise 3: Deploy the Web site
@@ -620,8 +610,8 @@ Now it is time to copy the files that comprise your Web site to the Azure Web Ap
 
 1. Upload a few images to the Web site. Click any of the image thumbnails to see an enlarged view.
 
-	> By default, the PHP installation in your Azure Web App limits file uploads to 8 MB. You can increase the limit by adding a .user.ini file to your site as [described here](https://azure.microsoft.com/en-us/documentation/articles/web-sites-php-configure/). For now, just upload images that are smaller than 8 MB because you would have to adjust other PHP settings such as MEMORY_LIMIT to handle very large images.
-    
+	> The code that uploads the images limits file uploads to 4 MB to stay under PHP's default upload-size limit and to improve performance, so be sure to select images that are 4 MB or smaller in size.
+
     ![The working Web site](Images/final-workingwebsite.png)
 
     _The working Web site_

@@ -23,7 +23,7 @@ namespace ATMDashboard
 
             string eventHubConnectionString = "connection_string";
             string eventHubName = "outputhub";
-            string storageAccountName = "cstorage_account_name";
+            string storageAccountName = "storage_account_name";
             string storageAccountKey = "storage_account_key";
             string storageConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", storageAccountName, storageAccountKey);
 

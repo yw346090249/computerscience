@@ -31,7 +31,7 @@ The following are required to complete this hands-on lab:
 - An active Microsoft Azure subscription. If you don't have one, [sign up for a free trial](http://aka.ms/WATK-FreeTrial).
 - [Microsoft Azure Storage Explorer](http://storageexplorer.com/)
 - [Visual Studio Code](https://code.visualstudio.com/download)
-- [Git](https://git-scm.com/downloads) version 2.0 or higher
+- [Git](https://git-scm.com/downloads) version 2.0 or higher. See https://git-scm.com/book/en/v2/Getting-Started-Installing-Git for instructions for installing it on Windows, macOS, and Linux.
 - [Node.js](https://nodejs.org/en/download/) version 4 or higher
 
 ---
@@ -52,7 +52,7 @@ Estimated time to complete this lab: **60** minutes.
 ---
 
 <a name="Exercise1"></a>
-## Exercise1: Create a storage account
+## Exercise 1: Create a storage account
 
 The [Azure Portal](https://portal.azure.com) allows you to perform basic storage operations such as creating storage accounts, creating containers, and managing access keys. In this exercise, you will use the portal to create a storage account. Then you'll create a pair of containers: one to store images uploaded by the user, and another to store image thumbnails generated from the uploaded images.
 
@@ -113,7 +113,7 @@ You have now created a storage account to hold images uploaded to the app you're
 <a name="Exercise2"></a>
 ## Exercise 2: Run the Microsoft Azure Storage Explorer
 
-The [Microsoft Azure Storage Explorer](http://storageexplorer.com/) is a free tool that provides a graphical interface for working with Azure Storage on PCs running Windows, macOS, and Linux. It provides most of the same functionality as the Azure Portal. It also offers features the portal does not, such as the ability to upload blobs to Azure Storage and view blob metadata. In this exercise, you will use the Microsoft Azure Storage Explorer to view the containers you created in Exercise 1.
+The [Microsoft Azure Storage Explorer](http://storageexplorer.com/) is a free tool that provides a graphical interface for working with Azure Storage on PCs running Windows, macOS, and Linux. It provides most of the same functionality as the Azure Portal. It also offers features the portal does not, such as the ability to view blob metadata. In this exercise, you will use the Microsoft Azure Storage Explorer to view the containers you created in Exercise 1.
 
 1. Start Storage Explorer. If you are asked to log in, do so using your Microsoft account — the same one that you used to log in to the Azure Portal. If you are *not* asked to log in and don't see the storage account you created in the previous exercise in Storage Explorer's left pane, click the **Azure Accounts settings** button highlighted below, click **Add an account**, and log in with your Microsoft account.
 
@@ -181,13 +181,11 @@ In this exercise, you will create a new Web app in Visual Studio Code and add co
 
 	Windows:
 	<pre>
-	set AZURE_VISION_API_KEY=<i>vision_api_key</i>
-	</pre>
+	set AZURE_VISION_API_KEY=<i>vision_api_key</i></pre>
 
 	Mac:
 	<pre>
-	export AZURE_VISION_API_KEY=<i>vision_api_key</i>
-	</pre>
+	export AZURE_VISION_API_KEY=<i>vision_api_key</i></pre>
 	
 	> Storing sensitive values such as API keys in environment variables prevents you from having to embed them in your code, where a determined intruder could find them and use them. When you deploy the app to the cloud, these values will be stored in Azure and never exposed to the end user or transmitted over the wire.
 
@@ -195,13 +193,11 @@ In this exercise, you will create a new Web app in Visual Studio Code and add co
 
 	Windows:
 	<pre>
-	set AZURE_STORAGE_ACCOUNT=<i>storage_account_name</i>
-	</pre>
+	set AZURE_STORAGE_ACCOUNT=<i>storage_account_name</i></pre>
 	
 	Mac:
 	<pre>
-	export AZURE_STORAGE_ACCOUNT=<i>storage_account_name</i>
-	</pre>
+	export AZURE_STORAGE_ACCOUNT=<i>storage_account_name</i></pre>
 
 1. Return to the Azure Portal for a moment and open the blade for the storage account you created in Exercise 1. Then click **Access keys** to view the storage account's access keys. 
 
@@ -219,19 +215,16 @@ In this exercise, you will create a new Web app in Visual Studio Code and add co
 	
 	Windows:
 	<pre>
-	set AZURE_STORAGE_ACCESS_KEY=<i>storage_account_key</i>
-	</pre>
+	set AZURE_STORAGE_ACCESS_KEY=<i>storage_account_key</i></pre>
 	
 	Mac:
 	<pre>
-	export AZURE_STORAGE_ACCESS_KEY=<i>storage_account_key</i>
-	</pre>
+	export AZURE_STORAGE_ACCESS_KEY=<i>storage_account_key</i></pre>
 
 1. In the Command Prompt window, navigate to the Intellipix directory you created in Step 1 and execute the following command (note the space and the period at the end of the command) to start Visual Studio Code in that directory:
 
 	<pre>
-	code .
-	</pre>
+	code .</pre>
 
 1. In Visual Studio Code, click the **Git** button in the ribbon on the left.
 
@@ -248,14 +241,12 @@ In this exercise, you will create a new Web app in Visual Studio Code and add co
 1. Return to the Command Prompt window and make sure you're still in the "Intellipix" directory that you created for the project (the directory that was just placed under source control). Then execute the following command to initialize the project. When prompted for an author name, enter your name.
 
 	<pre>
-	npm init -y
-	</pre> 
+	npm init -y</pre> 
 
 1. Now execute the following command to install the NPM packages that the app will use:
 
 	<pre>
-    npm install -save azure-storage express multer request streamifier
-	</pre> 
+    npm install -save azure-storage express multer request streamifier</pre> 
 
 	> [azure-storage](https://www.npmjs.com/package/azure-storage) is Microsoft's Azure Storage Client Library for Node.js. It provides convenient JavaScript APIs for accessing blob storage, table storage, and more.
 
@@ -283,8 +274,7 @@ In this exercise, you will create a new Web app in Visual Studio Code and add co
 
     <pre>
 	.vscode/
-	node_modules/
-	</pre>
+	node_modules/</pre>
 
 1. Add a file named **server.js** to the project and insert the following statements:
 
@@ -748,8 +738,7 @@ In this exercise, you will run the app locally in order to test it and familiari
 1. Return to the Command Prompt window and, once more, make sure you're in the "Intellipix" directory that you created for the project. Then execute the following command to start **server.js**:
 
 	<pre>
-	node server.js
-	</pre>
+	node server.js</pre>
 
 1. Open your browser and navigate to [http://localhost:9898](http://localhost:9898).
 
@@ -820,7 +809,7 @@ In this exercise, you will create an Azure Web App and deploy Intellipix to it u
 
 1. Open the [Azure Portal](https://portal.azure.com) in your browser. If you are asked to log in, do so using your Microsoft account.
 
-1. Click **+ New**, followed by **Web + mobile** and **Web App**.
+1. Click **+ New**, followed by **Web + Mobile** and **Web App**.
 
     ![Creating a new Azure Web App](Images/node-new-web-app.png)
 
@@ -923,14 +912,12 @@ In this exercise, you will create an Azure Web App and deploy Intellipix to it u
 1. Return to the Command Prompt window (or open a new one if you closed the last one) and execute the following command to add "azure" as a remote name. Substitute the Git URL on the clipboard for *git_url*.
 
 	<pre>
-	git remote add azure <i>git_url</i>
-	</pre>
+	git remote add azure <i>git_url</i></pre>
 
 1. Now use the following command to deploy Intellipix from your local Git repository to Azure. When prompted to enter Git credentials, type the user name and password you specified in Step 17 of this exercise.
 
 	<pre>
-	git push azure master
-	</pre>
+	git push azure master</pre>
 
 1. After a few moments, you should be greeted with a successful deployment.
 
@@ -945,6 +932,8 @@ In this exercise, you will create an Azure Web App and deploy Intellipix to it u
     _The finished product!_
 
 If you make changes to the app and want to push the changes out to the Web, simply commit the changes in Visual Studio Code and execute a **git push azure master** command again. Of course, you can still test your changes locally before publishing to the Web.
+
+When you're finished using the site, it is recommended that you delete the resource group containing it. Deleting the resource group deletes all of the resources inside it (including the storage account, the blobs uploaded to it, and the App Service), removes all traces of this lab from your account, and prevents any further charges from being incurred for it. To delete the resource group, simply open the resource-group blade in the portal and click **Delete** at the top of the blade. You will be asked to type the resource group's name to confirm that you want to delete it, because once deleted, a resource group can't be recovered.
 
 ## Summary
 
