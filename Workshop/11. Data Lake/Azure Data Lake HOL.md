@@ -1,5 +1,5 @@
 <a name="HOLTitle"></a>
-# Handling Big-Data Workloads with Azure Data Lake #
+# Handling Big Data with Azure Data Lake #
 
 ---
 
@@ -29,6 +29,11 @@ The following are required to complete this hands-on lab:
 - An active Microsoft Azure subscription. If you don't have one, [sign up for a free trial](http://aka.ms/WATK-FreeTrial).
 - [Azure Command-Line Interface (CLI)](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/)
 
+<a name="Resources"></a>
+### Resources ###
+
+[Click here](https://a4r.blob.core.windows.net/public/data-lake-resources.zip) to download a zip file containing the resources used in this lab. Copy the contents of the zip file into a folder on your hard disk.
+
 ---
 
 <a name="Exercises"></a>
@@ -52,15 +57,13 @@ The starting point for using Azure Data Lake is setting up an Azure Data Lake St
 
 1. In your browser, navigate to the [Azure Portal](https://portal.azure.com). If you are asked to sign in, do so using your Microsoft account.
 
-1. In the portal, click **+ New**, followed by **Intelligence + analytics** and **Data Lake Store**.
+1. In the portal, click **+ New**, followed by **Data + Analytics** and **Data Lake Store**.
 
     ![Adding a new Data Lake Store](Images/new-data-lake-store.png)
 
     _Adding a new Data Lake Store_
 
-1. In the "New Data Lake Store" blade, enter a unique name for your Data Lake Store in all lowercase. The name must be unique within Azure since it becomes part of the store's DNS name. Make sure **Create new** is selected under **Resource Group**, and then enter a resource-group name such as "DataLakeResourceGroup" (without quotation marks). Choose the location nearest you, and then click **Create**.
-
-	> If there are any input errors, such as spaces in the resource-group name, the offending fields will be flagged with red exclamation points rather than green check marks. Hover the mouse cursor over an exclamation point for help resolving the error.
+1. In the "New Data Lake Store" blade, enter a unique name for your Data Lake Store in all lowercase and make sure a green check mark appears next to it. (The name must be unique within Azure since it becomes part of the store's DNS name.) Make sure **Create new** is selected under **Resource Group**, and then enter a resource-group name such as "DataLakeResourceGroup." Choose the location nearest you, and then click **Create**.
 
     ![Creating a Data Lake Store](Images/create-data-lake-store.png)
 
@@ -72,9 +75,7 @@ The starting point for using Azure Data Lake is setting up an Azure Data Lake St
 
     _Opening the resource group_
 
-1. Wait until "Deploying" changes to "Succeeded," indicating that the Data Lake Store has been created. Deployment typically takes a minute or less.
-
-	> Click the browser's **Refresh** button occasionally to update the deployment status. Clicking the **Refresh** button in the resource-group blade refreshes the list of resources in the resource group, but does not reliably update the deployment status.
+1. Wait until "Deploying" changes to "Succeeded," indicating that the Data Lake Store has been created. Deployment typically takes a minute or less. You can click the **Refresh** button at the top of the blade to refresh the deployment status.
 
     ![Deployment succeeded](Images/successful-deployment-1.png)
 
@@ -87,7 +88,7 @@ Now that you have created a Data Lake Store, the next step is to create a Data L
 
 Azure Data Lake formally separates the concepts of storing data and querying data. This allows Azure Data Lake Analytics to operate against a range of possible data sources contained in an Azure Data Lake Store. In this exercise, you will create a Data Lake Analytics account and connect it to the Data Lake Store you created in [Exercise 1](#Exercise1).
 
-1. In the portal, click **+ New**, followed by **Intelligence + analytics** and **Data Lake Analytics**.
+1. In the portal, click **+ New**, followed by **Data + Analytics** and **Data Lake Analytics**.
 
     ![Adding a new Data Lake Analytics account](Images/new-data-lake-analytics.png)
 
@@ -101,7 +102,7 @@ Azure Data Lake formally separates the concepts of storing data and querying dat
 
     _Creating a Data Lake Analytics account_
 
-1. Return to the resource group that holds the Data Lake Store and the Data Lake Analytics account and wait for "Deploying" to change to "Succeeded." Once more, it helps to refresh the page every now and then to make sure the information displayed there is up to date.
+1. Return to the resource group that holds the Data Lake Store and the Data Lake Analytics account and wait for "Deploying" to change to "Succeeded." Once more, You can click the **Refresh** button at the top of the blade to refresh the deployment status.
 
     ![Deployment succeeded](Images/successful-deployment-2.png)
 
@@ -112,7 +113,7 @@ You now have Azure Data Lake storage and query capability set up in your Azure s
 <a name="Exercise3"></a>
 ## Exercise 3: Import data into Azure Data Lake Store ##
 
-This lab's "resources" directory holds two tab-delimited TSV files containing sample data. The data comes from the public domain and consists of questions and answers from the popular site http://academia.stackexchange.com. In this exercise, you will import the sample data into your Azure Data Lake Store so you can execute queries against it.
+The [resources that accompany this lab](https://a4r.blob.core.windows.net/public/data-lake-resources.zip) include two tab-delimited TSV files containing sample data. The data comes from the public domain and consists of questions and answers from the popular site http://academia.stackexchange.com. In this exercise, you will import the sample data into your Azure Data Lake Store so you can execute queries against it.
 
 1. In the portal, open the Azure Data Lake Store that you created in [Exercise 1](#Exercise1). (An easy way to do that is to open the resource group and then click the Data Lake Store resource.) In the blade for the Data Lake Store, click **Data Explorer** near the top.
 
@@ -126,7 +127,7 @@ This lab's "resources" directory holds two tab-delimited TSV files containing sa
 
     _Opening the "Upload files" blade_
     
-1. In the "Upload files" blade, click the **Open** button and select the files named **comments.tsv** and **posts.tsv** in this lab's "resources" directory. Then click **Add selected files**. The combined file size file is more than 90 MB, so the upload might take a few minutes.
+1. In the "Upload files" blade, click the **Open** button and select the files named **comments.tsv** and **posts.tsv** in the directory containing the lab resources. Then click **Add selected files**. The combined file size file is more than 90 MB, so the upload might take a few minutes.
 
     ![Uploading TSV files](Images/data-explorer-upload-tsv.png)
 
@@ -194,7 +195,7 @@ The next step is to query the data to extract the information you want from it. 
 	    USING Outputters.Csv();
 	```
 
-    The query contains three main parts. The **EXTRACT** statement extracts data from an existing data source, in this case the **posts.tsv** file you uploaded to the Data Lake Store. The **SELECT** statement transforms the input data into a shape suitable to the task at hand. Finally, the **OUTPUT** statement outputs the result as a named rowset, which can be used for further analysis or visualization.
+    The query contains three main parts. The **EXTRACT** statement extracts data from an existing data source, in this case the **posts.tsv** file you uploaded to the Data Lake Store. The **SELECT** statement transforms the input data into a shape suitable to the task at hand. Finally, the **OUTPUT** statement outputs the result as a named rowset in a file named **totalscores.csv**, which can be used for further analysis or visualization.
 
 1. Click **Submit Job** to execute the query.
 
@@ -244,7 +245,7 @@ Let's get started!
 
     _Creating a new storage account_
 
-1. Click **Resource groups** in the ribbon on the left side of the portal, and then click the resource group that holds the storage account. Now click the storage account to open a blade for that account.
+1. Click **Resource groups** in the ribbon on the left side of the portal, and then click the resource group that holds the storage account. Wait for the storage account to finish deploying. Then click the storage account to open a blade for that account.
 
     ![Opening the storage account](Images/open-storage-account.png)
 
@@ -256,17 +257,11 @@ Let's get started!
 
     _Opening blob storage_
 
-1. Click **+ Container** to create a new container.
+1. Click **+ Container** to create a new container. Enter the name "bacpacs" (without quotation marks) for the new blob container, and then click **OK**.
 
     ![Adding a container](Images/add-container.png)
 
     _Adding a container_
-
-1. Enter the name "bacpacs" (without quotation marks) for the new blob container, and then click **Create**:
-
-    ![Creating a new container](Images/new-container.png)
-
-    _Creating a new container_
 
 1. Click the "bacpacs" container to open it.
 
@@ -280,7 +275,7 @@ Let's get started!
 
     _Uploading to the "bacpacs" container_
 
-1. Click the **Open** button to the right of the **Files** box. Navigate to this lab's "resources" folder and select the file named **academics-stackexchange-users.bacpac**. Then click the **Upload** button to upload the file to the container.
+1. Click the **Open** button to the right of the **Files** box. Navigate to the directory containing the lab resources and select the file named **academics-stackexchange-users.bacpac**. Then click the **Upload** button to upload the file to the container.
 
     ![Uploading a file](Images/upload-blob-2.png)
 
@@ -298,27 +293,25 @@ Let's get started!
 
     _Searching for SQL servers_
 
-1. Click **+ Add** in the "SQL servers" blade:
-
-    ![Adding a SQL server](Images/add-sql-server.png)
-
-    _Adding a SQL server_
-
-1. Enter a unique name for your SQL server. (It must be unique across all of Azure; be sure a green check mark appears in the box.) Enter "azureuser" (without quotation marks) as the user name, and "Azure4Research!" (again without quotation marks) as the password. Under **Resource group**, select **Use existing** and select the same resource group you have used throughout this lab. For **Location**, select the same location you selected in previous exercises. When you're finished, click the **Create** button at the bottom of the blade.
+1. Click **+ Add** in the "SQL servers" blade. In the "SQL Server" blade, enter a unique name for your SQL server. (It must be unique across all of Azure; be sure a green check mark appears in the box.) Enter "azureuser" as the user name, and "Azure4Research!" as the password. Under **Resource group**, select **Use existing** and select the same resource group you have used throughout this lab. For **Location**, select the same location you selected in previous exercises. When you're finished, click the **Create** button at the bottom of the blade.
 
     ![Creating a new SQL server](Images/create-sql-server.png)
 
     _Creating a new SQL server_
 
-    After a few moments, the SQL server will be created. Click the **Refresh** button at the top of the "SQL servers" blade and make sure the new SQL server appears in the list of SQL servers associated with your subscription. 
+1. Next, you need to create a new database instance using the blob you uploaded earlier. Wait until the new SQL server is created. (It will probably take a minute or two. Click the **Refresh** button in the "SQL servers" blade from time to time until it appears.) In the "SQL servers" blade, click the SQL server you just created.
 
-1. Next, you need to create a new database instance using the blob you uploaded a few moments ago. In the "SQL servers" blade, click the SQL server you just created. Then click **Import database**.
+    ![Opening the SQL server](Images/open-sql-server.png)
+
+    _Opening the SQL server_
+
+1. Click **Import database**.
 
     ![Importing a database](Images/import-database.png)
 
     _Importing a database_
 
-1. In the "Import database" blade, click **Storage** and select the storage account that you uploaded the .bacpac file to, followed by the "bacpacs" container and, after that, the blob you uploaded to that container. Then click the **Select** button at the bottom of that blade. Now return to the "Import database" blade and enter "azureuser" as the user name and "Azure4Research!" as the password, both without quotation marks. Finish up by clicking **OK** at the bottom of the blade.
+1. In the "Import database" blade, click **Storage** and select the storage account that you uploaded the .bacpac file to, followed by the "bacpacs" container and, after that, the blob you uploaded to that container. Then click the **Select** button at the bottom of the blade. Return to the "Import database" blade and enter "azureuser" as the user name and "Azure4Research!" as the password. Finish up by clicking **OK** at the bottom of the blade.
 
     ![Specifying database import options](Images/import-database-instance.png)
 
@@ -330,7 +323,7 @@ Let's get started!
 
 	_Viewing firewall settings_
 
-1. Add an IP range to allow Data Lake Analytics to communicate with your server during federated query execution. Type the following values into the three text boxes and then click **Save** at the top of the blade:
+1. Add an IP range to allow Data Lake Analytics to communicate with your server during federated query execution. Type the following values into the three input fields, and then click **Save** at the top of the blade:
 
     - **Rule Name**: Allow Data Lake
     - **Start IP**: 25.66.0.0
@@ -349,24 +342,30 @@ Let's get started!
 1. If you haven't installed the [Azure CLI](https://azure.microsoft.com/en-us/documentation/articles/xplat-cli-install/), take a moment to install it now. Then open a command shell (Bash, Terminal, Command Prompt, etc.) and execute the following command:
 
 	```
-	azure login
+	az login
 	```
 
-1. Copy the access code presented to you in the command shell. Then open a browser window and navigate to https://aka.ms/devicelogin and enter the code. If prompted to log in, do so using your Microsoft account. Upon successful authentication, your command-line session will be connected to your Azure subscription.
+	> As an alternative to installing the Azure CLI, you can use the [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/) available in the [Azure Portal](https://portal.azure.com). Simply open the portal in your browser and click the **Cloud Shell** button in the toolbar at the top of the page. One of the benefits of using the Cloud Shell is that you're *always* running an up-to-date version. Note that you can use **Shift+Insert** to paste commands into the Cloud Shell, and **Ctrl+Insert** to copy text from the Cloud Shell to the clipboard.
 
-1. Assuming you are using the Azure Pass subscription provided to you for these labs, execute the following command to ensure that Azure Pass is the active subscription (the subscription that will be charged against) for operations performed with the CLI:
+	![Opening the Azure Cloud Shell](Images/cloud-shell.png)
+
+	_Opening the Azure Cloud Shell_
+
+1. Copy the access code presented to you in the command shell to the clipboard. Then open a browser window and navigate to https://aka.ms/devicelogin and enter the code. If prompted to sign in, do so using your Microsoft account. Upon successful authentication, your command-line session will be connected to your Azure subscription.
+
+1. Assuming you are using the Azure Pass subscription provided to you for these labs, execute the following command to ensure that Azure Pass is the active subscription (the subscription that will be charged against) for operations performed with the CLI, replacing SUBSCRIPTION_NAME_OR_ID with the subscription's name or ID:
 
 	```
-	azure account set "Azure Pass"
+	az account set --subscription "SUBSCRIPTION_NAME_OR_ID"
 	```
 
-1. Now execute the following commands to create a Data Lake catalog credential used to authenticate when executing federated queries. Substitute your Data Lake Analytics account name for *analytics_account_name* and your database server name (the one specified in Step 13 of this exercise) for *database_server_name*:
+1. Now execute the following commands to create a Data Lake catalog credential used to authenticate when executing federated queries. Substitute your Data Lake Analytics account name for ANALYTICS_ACCOUNT_NAME, your database server name (the one specified in Step 11 of this exercise) for DATABASE_SERVER_NAME, and the database server user (also specified in Step 11) for DATABASE_USER:
 
     <pre>
-	azure config mode arm
-	azure datalake analytics catalog credential create <i>analytics_account_name</i> UserIntegration tcp://<i>database_server_name</i>.database.windows.net FederatedCredential azureuser</pre>
+	az config mode arm
+	az dla catalog credential create --account ANALYTICS_ACCOUNT_NAME --database-name UserIntegration --uri tcp://DATABASE_SERVER_NAME.database.windows.net --credential-name FederatedCredential --user-name DATABASE_USER</pre>
 
-	When prompted for a password, enter the SQL server password ("Azure4Research!") you specified in Step 13.
+	When prompted for a password, enter the SQL server password ("Azure4Research!") you specified in Step 11.
 
 1. Return to your Data Lake Analytics account in the Azure Portal. Then click **+ New Job** and execute the following query:
 
@@ -388,7 +387,7 @@ Let's get started!
                         ) FROM AcademicSEDb LOCATION "dbo.User";
 	```
 
-    This query configures your SQL database as a data source authenticated with the credential you created in Step 22, and then creates a named table in your local Data Lake Analytics database which is backed by the SQL data source.
+    This query configures your SQL database as a data source authenticated with the credential you created in Step 21, and then creates a named table in your local Data Lake Analytics database which is backed by the SQL data source.
 
 That was a lot of work, but you are now ready to issue federated queries. Let's try it out!
 
@@ -443,7 +442,7 @@ Two of the most compelling features of Data Lake Analytics are its ability to fe
 	    USING Outputters.Csv();
 	```
 
-	This query first applies structure to the data in **posts.tsv** and then queries that file for the earliest post by each user. Then it joins the query results to the external database table created in the previous exercise and performs another query to associate a user name with each post. Finally, it writes the output of this query to **firstposts.csv**. Note the call to **DateTime.Parse** embedded in the query. This is an example of how C# expressions can be included in U-SQL to richen the queries you perform.
+	This query first applies structure to the data in **posts.tsv** and then queries that file for the earliest post by each user. Then it joins the query results to the external database table created in the previous exercise and performs another query to associate a user name with each post. Finally, it writes the output of this query to **firstposts.csv**. Note the call to ```DateTime.Parse``` embedded in the query. This is an example of how C# expressions can be included in U-SQL to richen the queries you perform.
 
 1. Once the job has run successfully, open the blade for your Data Lake Store and click **Data Explorer** near the top. Confirm that the Data Lake Store contains a file named **firstposts.csv**. Then click the file.
 

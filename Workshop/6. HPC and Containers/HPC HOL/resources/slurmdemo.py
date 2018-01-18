@@ -99,7 +99,7 @@ def submit():
     os.environ[SLURMDEMO_OUTPUTACCOUNT] = ACCOUNT_NAME
 
     # Call sbatch
-    cli = "sbatch --array=0-{nb} slurmdemo.sh".format(nb=len(bloblist))
+    cli = "sbatch -N 2 -n 2 --array=0-{nb} slurmdemo.sh".format(nb=len(bloblist))
     run(cli, showoutput=True)
 
 def run(cli, showoutput=False):

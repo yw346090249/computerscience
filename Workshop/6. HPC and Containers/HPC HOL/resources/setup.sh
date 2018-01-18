@@ -24,21 +24,21 @@
 #
 #
 
-# Install the python package manager.
-sudo apt-get install -y python-pip
+# Install the python package manager and other dependecies.
+sudo apt-get install -y python-pip build-essential libssl-dev libffi-dev python-dev
 # Install image conversion utility.
 sudo apt-get install -y imagemagick
 # install the azure package for Python.
-pip install azure
+pip install azure==0.11.1 azure-storage==0.20.0
 # Get the blob copy utility for Python.
 wget 'https://raw.githubusercontent.com/Wintellect/blobxfer/master/blobxfer-0.9.9.10.py'
 
 for node in $(sinfo -o "%n" -h|grep -v `hostname`)
 do
 
-  ssh azureuser@$node sudo apt-get -y install python-pip
+  ssh azureuser@$node sudo apt-get -y install python-pip build-essential libssl-dev libffi-dev python-dev
   ssh azureuser@$node sudo apt-get -y install imagemagick
-  ssh azureuser@$node pip install azure
+  ssh azureuser@$node pip install azure==0.11.1 azure-storage==0.20.0
 
   scp slurmdemo.py azureuser@$node:~
   scp slurmdemo.sh azureuser@$node:~

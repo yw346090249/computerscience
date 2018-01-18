@@ -30,7 +30,13 @@ The following are required to complete this hands-on lab:
 - A Microsoft Account
 - A modern Web browser
 
+<a name="Resources"></a>
+### Resources ###
+
+[Click here](https://a4r.blob.core.windows.net/public/notebook-resources.zip) to download a zip file containing the resources used in this lab. Copy the contents of the zip file into a folder on your hard disk.
+
 ---
+
 <a name="Exercises"></a>
 ## Exercises ##
 
@@ -132,7 +138,7 @@ The notebook editor currently shows an empty cell. In this exercise, you will ad
 
 	_Running a code cell_
 
-1. Click **Data** in the menu at the top of the page, and select **Upload** from the drop-down menu. Then navigate to the "resources" folder of this lab and upload the files named **5-year-mean-1951-1980.csv** and **5-year-mean-1882-2014.csv**.
+1. Click **Data** in the menu at the top of the page, and select **Upload** from the drop-down menu. Then upload the files named **5-year-mean-1951-1980.csv** and **5-year-mean-1882-2014.csv** from the [resources that accompany this lab](https://a4r.blob.core.windows.net/public/notebook-resources.zip).
 
 	![Uploading data to the notebook](Images/upload-data.png)
 
@@ -352,7 +358,7 @@ Downloading .ipynb files is also useful for making local copies of your notebook
 <a name="Summary"></a>
 ## Summary ##
 
-The [Azure Notebooks Web site](https://notebooks.azure.com/) contains several sample notebooks that you can experiment with and learn from. [Discover Sentiments in Tweets](https://notebooks.azure.com/n/BDeKVbbN2r4/notebooks/Discover%20Sentiments%20in%20Tweets.ipynb) performs sentiment analysis on 160,000 tweets, and uses the [word_cloud](https://github.com/amueller/word_cloud) package to generate word clouds from the tweets. [Introduction to Cognitive Toolkit](https://notebooks.azure.com/n/TV1nKhrt0gk/tree) is a library of notebooks that demonstrate how to use the [Microsoft Cognitive Toolkit](https://www.microsoft.com/en-us/research/product/cognitive-toolkit/) to build sophisticated machine-learning models. Check out the Azure Notebooks home page for additional sample notebooks, and use them to deepen your understanding of Jupyter and sharpen your data-science skills.  
+The [Azure Notebooks Web site](https://notebooks.azure.com/) contains several sample notebooks that you can experiment with and learn from. [Discover Sentiments in Tweets](https://notebooks.azure.com/Microsoft/libraries/samples/html/Discover%20Sentiments%20in%20Tweets.ipynb) performs sentiment analysis on 160,000 tweets, and uses the [word_cloud](https://github.com/amueller/word_cloud) package to generate word clouds from the tweets. [Introduction to Cognitive Toolkit](https://notebooks.azure.com/cntk/libraries/tutorials) is a library of notebooks that demonstrate how to use the [Microsoft Cognitive Toolkit](https://www.microsoft.com/en-us/research/product/cognitive-toolkit/) to build sophisticated machine-learning models. Check out the Azure Notebooks home page for additional sample notebooks, and use them to deepen your understanding of Jupyter and sharpen your data-science skills.
 
 ---
 

@@ -45,7 +45,15 @@ The following are required to complete this hands-on lab:
 
 If you do not have a 64-bit Linux or 64-bit Windows machine, you can create a [Linux Virtual Machine on Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) and perform the lab using the VM. If you don't have an Azure subscription, [sign up for a free trial](http://aka.ms/WATK-FreeTrial).
 
-## Exercises
+<a name="Resources"></a>
+### Resources ###
+
+[Click here](https://a4r.blob.core.windows.net/public/cntk-resources.zip) to download a zip file containing the resources used in this lab. Copy the contents of the zip file into a folder on your hard disk.
+
+---
+
+<a name="Exercises"></a>
+## Exercises ##
 
 This hands-on lab includes the following exercises:
 
@@ -71,43 +79,19 @@ Installing the Microsoft Cognitive Toolkit is reasonably straightforward if you 
 
 1. Open the downloaded zip file and copy the folder named "cntk" to your desktop or to the location of you choice.
 
-1. Press **Windows + R**, and then execute the following command to launch a Command Prompt window in administrator mode:
-
-	```
-	powershell -Command "Start-Process cmd -Verb RunAs"
-	```
-
-	![Launching a Command Prompt as administrator](Images/command-prompt.png)
-
-	_Launching a Command Prompt as administrator_
-
-1. In the Command Prompt window, use a **cd** command to change to the "cntk" directory that you copied from the zip file. Then execute the following command:
+1. Open a Command Prompt window and use a **cd** command to change to the "cntk" directory that you copied from the zip file. Then execute the following command:
 
 	```
 	cd Scripts\install\windows
 	```
 
-1. Use the following command to run a PowerShell script to install CNTK dependencies: 
+1. Next, use the following command to install CNTK and its dependencies: 
 
 	```
-	powershell -ExecutionPolicy UnRestricted -File install.ps1 -Execute
+	install.bat
 	```
 
-1. Each time you are prompted with a security warning, press **R** followed by **Enter** to answer "Run once."
-
-	![Allowing the script to run](Images/security-warning.png)
-
-	_Allowing the script to run_
-
-1. When prompted to continue, press **1** followed by **Enter** to answer "I agree and want to continue."
-
-	![Proceeding with the installation process](Images/i-agree.png)
-
-	_Proceeding with the installation process_
-
-1. Once the script determines what needs to be installed and prompts you for confirmation to continue, press **Y** followed by **Enter** to answer "yes."
-
-1. The script downloads a number of libraries and installs them on your computer. This will take a few minutes to complete. Once the script is finished, you will be shown the path to a .bat file that activates the CNTK Python environment. Copy this command to the clipboard.
+1. Each time you are prompted and asked if you want to continue, answer in the affirmative. The script downloads a number of libraries and installs them on your computer. This will take a few minutes to complete. Once the script is finished, you will be shown the path to a .bat file that activates the CNTK Python environment. Copy this command to the clipboard.
 
 	![Copying the command that activates the environment](Images/install-finished.png)
 
@@ -272,7 +256,7 @@ Feel free if time permits to use some of the other .cntk files in the directory 
 <a id="Exercise5"/></a>
 ## Exercise 5: Input custom handwriting samples
 
-The "resources" folder of this lab contains a set of custom images that can be used for testing handwriting recognition, as well as Python scripts for creating the text files required to test them with CNTK. These images are not part of the MNIST dataset, but are ones generated for this exercise.
+The [resources that accompany this lab](https://a4r.blob.core.windows.net/public/cntk-resources.zip) include a set of custom images that can be used to test handwriting recognition, as well as Python scripts for creating the text files required to test them with CNTK. These images are not part of the MNIST dataset, but are ones generated for this exercise.
 
 ![Custom images for testing neural networks](Images/test-images.png)
 
@@ -280,7 +264,7 @@ _Custom images for testing neural networks_
 
 In this exercise, you will use these images to determine how well the networks you trained in the previous exercise can recognize handwritten digits that aren't part of the testing dataset.
 
-1. In the Command Prompt or Terminal window, change to this lab's "resources" directory. Then use the following command to run the script named **images2cntk.py**. This will create a file named **Custom-Test-28x28_cntk_text.txt**:
+1. In the Command Prompt or Terminal window, change to the directory where you copied the lab resources. Then use the following command to run the script named **images2cntk.py**. This will create a file named **Custom-Test-28x28_cntk_text.txt**:
 
 	```
 	python images2cntk.py
@@ -350,7 +334,7 @@ If you care to, you can use your favorite bitmap editor to generate test images 
 
 	_Drawing an 8_
 
-1. Save the image into the "input-images" folder in this lab's "resources" directory. Name the file **X-YY.png**, where X is the value of the digit, and YY is any number you want other than 01 (the suffix used for the test images provided with this lab). For example, the image above might be named **8-02.png**.
+1. Save the image into the "input-images" folder in the directory where you copied the lab resources. Name the file **X-YY.png**, where X is the value of the digit, and YY is any number you want other than 01 (the suffix used for the test images provided with this lab). For example, the image above might be named **8-02.png**.
 
 1. Repeat Steps 1 through 3 to create additional test images.
 

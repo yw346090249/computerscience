@@ -28,6 +28,11 @@ The following are required to complete this hands-on lab:
 - An active Microsoft Azure subscription. If you don't have one, [sign up for a free trial](http://aka.ms/WATK-FreeTrial).
 - [Microsoft Azure Storage Explorer](http://storageexplorer.com) (optional)
 
+<a name="Resources"></a>
+### Resources ###
+
+[Click here](https://a4r.blob.core.windows.net/public/functions-resources.zip) to download a zip file containing the resources used in this lab. Copy the contents of the zip file into a folder on your hard disk.
+
 ---
 
 <a name="Exercises"></a>
@@ -60,9 +65,9 @@ The first step in writing an Azure Function is to create an Azure Function App. 
 
 	> The app name becomes part of a DNS name and therefore must be unique within Azure. Make sure a green check mark appears to the name indicating it is unique. You probably **won't** be able to use "functionslab" as the app name.
  
-    ![Naming a Function App](Images/function-app-name.png)
+    ![Creating a Function App](Images/function-app-name.png)
 
-    _Naming a Function App_
+    _Creating a Function App_
 
 1. Click **Resource groups** in the ribbon on the left side of the portal, and then click the resource group created for the Function App.
  
@@ -70,12 +75,9 @@ The first step in writing an Azure Function is to create an Azure Function App. 
 
     _Opening the resource group_
 
+1. Periodically click the **Refresh** button at the top of the blade until "Deploying" changes to "Succeeded," indicating that the Function App has been deployed. Then click the storage account that was created for the Function App.
 
-1. Wait until "Deploying" changes to "Succeeded," indicating that the Function App has been deployed. Then click the storage account that was created for the Function App.
-
-	> Refresh the page in the browser every now and then to update the deployment status. Clicking the **Refresh** button in the resource-group blade refreshes the list of resources in the resource group, but does not reliably update the deployment status.
-
-    ![Opening the storage account](Images/open-storage-account-after-deployment.png)
+    ![Opening the storage account](Images/open-storage-account.png)
 
     _Opening the storage account_
 
@@ -85,19 +87,13 @@ The first step in writing an Azure Function is to create an Azure Function App. 
 
     _Opening blob storage_
 
-1. Click **+ Container** to add a container.
+1. Click **+ Container**. Type "uploaded" into the **Name** box and set **Public access level** to **Private**. Then click the **OK** button to create a new container.
 
     ![Adding a container](Images/add-container.png)
 
     _Adding a container_
 
-1. Type "uploaded" into the **Name** box. Then click the **Create** button to create the container.
-
-    ![Naming the container](Images/name-container.png)
-
-    _Naming the container_
-
-1. Repeat Steps 8 and 9 to add containers named "accepted" and "rejected" to blob storage.
+1. Repeat Step 7 to add containers named "accepted" and "rejected" to blob storage.
 
 1. Confirm that all three containers were added to blob storage.
 
@@ -118,9 +114,15 @@ Once you have created an Azure Function App, you can add Azure Functions to it. 
 
     _Opening the Function App_
 
-1. Click **+ New Function** and set **Language** to **JavaScript**. Then click **BlobTrigger-JavaScript**.
+1. Click the **+** sign to the right of **Functions**. Set the language to **JavaScript**, and then click **Custom function**.
+
+    ![Adding a function](Images/js-add-function.png)
+
+    _Adding a function_
+
+1. Set **Language** to **JavaScript**. Then click **BlobTrigger-JavaScript**.
   
-    ![Selecting a function template](Images/function-app-select-template-node.png)
+    ![Selecting a function template](Images/js-select-template.png)
 
     _Selecting a function template_
 
@@ -139,12 +141,12 @@ Once you have created an Azure Function App, you can add Azure Functions to it. 
 	module.exports = function (context, myBlob) {
 
 	context.log("Analyzing uploaded image '" + context.bindingData.name + "' for adult content...");
-	var options = getAnalysisOptions(myBlob, process.env.SubscriptionKey);
+	var options = getAnalysisOptions(myBlob, process.env.SubscriptionKey, process.env.VisionEndpoint);
 	analyzeAndProcessImage(context, options);
 
-	function getAnalysisOptions(image, subscriptionKey) {
+	function getAnalysisOptions(image, subscriptionKey, endpoint) {
 	    return  {
-	        uri: "https://api.projectoxford.ai/vision/v1.0/analyze?visualFeatures=Adult",
+	        uri: endpoint + "/analyze?visualFeatures=Adult",
 	        method: 'POST',
 	        body: image,
 	        headers: {
@@ -202,17 +204,17 @@ Once you have created an Azure Function App, you can add Azure Functions to it. 
 
 	> In Node.js, **module.exports** is the method used to export a function to be executed. The **getAnalysisOptions** function in this code prepares a request for each blob added to the "uploaded" container, and then it calls the **analyzeAndProcessImage** function to call the Computer Vision API to analyze the image and create a copy of the blob in either the "accepted" container or the "rejected" container, depending on the scores returned by the Computer Vision API. 
 
-1. Click the **Save** button at the top of the code editor to save your changes.
+1. Click the **Save** button at the top of the code editor to save your changes. Then click **View files**.
 
-    ![Saving the function](Images/save-index-file.png)
+    ![Saving the function](Images/js-save-index-js.png)
 
     _Saving the function_
 
-1. Click **Integrate**, and then click **Advanced editor** in the upper-right corner to view function bindings.
+1. Click **function.json** to open that file for editing.
 
-    ![Opening the advanced editor](Images/open-advanced-editor.png)
+    ![Opening function.json](Images/js-open-function-json.png)
 
-    _Opening the advanced editor_
+    _Opening function.json_
 
 1. Replace the JSON shown in the code editor with the following JSON:
 
@@ -231,24 +233,18 @@ Once you have created an Azure Function App, you can add Azure Functions to it. 
 	  "disabled": false
 	}
 	```
+
 	> The statement that sets "dataType" to "binary" improves performance when processing blobs that are images.  
 
+1. Click **Save** to save the changes to the file. 
 
-1. Click **Save** to save the changes to the function bindings. 
+    ![Saving function.json](Images/js-save-function-file.png)
 
-    ![Saving binding changes](Images/portal-save-config.png)
+    _Saving function.json_
 
-    _Saving binding changes_
+1. The function has been written, but you must install some dependency packages in order for it to work. The dependencies come from the two ```require``` statements at the beginning of the JavaScript code that you added. To resolve these dependencies, begin by clicking the function name in the ribbon on the left. Then click **Platform features**, followed by **Console** to open a developer console.
 
-1. The function has been written, but you must install some dependency packages in order for it to work. The dependencies come from the two *require* statements at the beginning of the JavaScript code that you added. To resolve these dependencies, begin by clicking **Function app settings** in the lower-left corner of the function designer.
-
-    ![Viewing Function App settings](Images/function-app-select-app-settings.png)
-
-    _Viewing Function App settings_
-
-1. Click **Open dev console**.
-
-    ![Opening the developer console](Images/open-dev-console.png)
+    ![Opening the developer console](Images/js-open-dev-console.png)
 
     _Opening the developer console_
  
@@ -258,13 +254,7 @@ Once you have created an Azure Function App, you can add Azure Functions to it. 
 	cd BlobImageAnalyis
 	```
 
-1. Execute the following command to install the Node Package Manager (NPM):
-
-	```
-	npm install
-	```
-
-1. Execute the following commands in the console to install the packages used by the function:
+1. Execute the following commands in the console to install the packages used by the function. Ignore any warning messages that are displayed, and note that each command may take a minute or more to run:
 
 	```
 	npm install request
@@ -277,31 +267,49 @@ An Azure Function written in JavaScript has been created and configured and the 
 <a name="Exercise3"></a>
 ## Exercise 3: Add a subscription key to application settings ##
 
-The Azure Function you created in [Exercise 2](#Exercise2) loads a subscription key for the Microsoft Cognitive Services Computer Vision API from application settings. This key is required in order for your code to call the Computer Vision API, and is transmitted in an HTTP header in each call. In this exercise, you will add an application setting containing the subscription key to the Function App.
+The Azure Function you created in [Exercise 2](#Exercise2) loads a subscription key for the Microsoft Cognitive Services Computer Vision API from application settings. This key is required in order for your code to call the Computer Vision API, and is transmitted in an HTTP header in each call. It also loads the base URL for the Computer Vision API (which varies by data center) from application settings. In this exercise, you will subscribe to the Computer Vision API, and then add an access key and a base URL to application settings.
 
-1. Open a new browser window and navigate to https://www.microsoft.com/cognitive-services/en-us/subscriptions. If you haven't signed up for the Computer Vision API, do so now. (Signing up is free.) Then click **Copy** under **Key 1** in your Computer Vision subscription to copy the subscription key to the clipboard.
+1. In the Azure Portal, click **+ New**, followed by **AI + Cognitive Services** and **Computer Vision API**.
 
-    ![Copying the subscription key to the clipboard](Images/computer-vision-key.png)
+    ![Creating a new Computer Vision API subscription](Images/new-vision-api.png)
 
-    _Copying the subscription key to the clipboard_
+    _Creating a new Computer Vision API subscription_
 
-1. Return to your Function App in the Azure Portal and click **Function app settings** in the lower-left corner of the function designer.
+1. Enter "VisionAPI" into the **Name** box and select **F0** as the **Pricing tier**. Under **Resource Group**, select **Use existing** and select the "FunctionsLabResourceGroup" resource group that you created for the Function App in Exercise 1. Check the **I confirm** box, and then click **Create**.
 
-    ![Viewing Function App settings](Images/function-app-select-app-settings.png)
+    ![Subcribing to the Computer Vision API](Images/create-vision-api.png)
 
-    _Viewing Function App settings_
+    _Subcribing to the Computer Vision API_
 
-1. Scroll down the page and click **Go to App Service Settings**.
+1. Return to the blade for "FunctionsLabResourceGroup" and click the Computer Vision API subscription that you just created.
 
-    ![Viewing App Service settings](Images/open-app-service-settings.png)
+    ![Opening the Computer Vision API subscription](Images/open-vision-api.png)
 
-    _Viewing App Service settings_
+    _Opening the Computer Vision API subscription_
 
-1. Click **Application settings**. Then scroll down until you find the "App settings" section. Add a new app setting named "SubscriptionKey" (without quotation marks), and paste the subscription key that is on the clipboard into the **Value** box. Then click **Save** at the top of the blade.
+1. Copy the URL under **Endpoint** into your favorite text editor so you can easily retrieve it in a moment. Then click **Show access keys**.
 
-    ![Adding a subscription key](Images/add-key.png)
+    ![Viewing the access keys](Images/show-access-keys.png)
 
-    _Adding a subscription key_
+    _Viewing the access keys_
+
+1. Click the **Copy** button to the right of **KEY 1** to copy the access key to the clipboard.
+
+    ![Copying the access key](Images/copy-access-key.png)
+
+    _Copying the access key_
+
+1. Return to the Function App in the Azure Portal and click the function name in the ribbon on the left. Then click **Platform features**, followed by **Application settings**. 
+
+    ![Viewing application settings](Images/open-app-settings.png)
+
+    _Viewing application settings_
+
+1. Scroll down to the "App settings" section. Add a new app setting named "SubscriptionKey" (without quotation marks), and paste the subscription key that is on the clipboard into the **Value** box. Then add a setting named "VisionEndpoint" and set its value to the endpoint URL you saved in Step 4. Finish up by clicking **Save** at the top of the blade.
+
+    ![Adding application settings](Images/add-keys.png)
+
+    _Adding application settings_
 
 The work of writing and configuring the Azure Function is complete. Now comes the fun part: testing it out.
 
@@ -312,7 +320,7 @@ Your function is configured to listen for changes to the blob container named "u
 
 1. In the Azure Portal, go to the resource group created for your Function App. Then click the storage account that was created for it.
 
-    ![Opening the storage account](Images/open-storage-account.png)
+    ![Opening the storage account](Images/open-storage-account-2.png)
 
     _Opening the storage account_
 
@@ -334,7 +342,7 @@ Your function is configured to listen for changes to the blob container named "u
 
     _Uploading images to the "uploaded" container_
 
-1. Click the button with the folder icon to the right of the **Files** box. Select all of the files in this lab's "Resources" folder. Then click the **Upload** button to upload the files to the "uploaded" container.
+1. Click the button with the folder icon to the right of the **Files** box. Select all of the files in the [resources that accompany this lab](https://a4r.blob.core.windows.net/public/functions-resources.zip). Then click the **Upload** button to upload the files to the "uploaded" container.
 
     ![Uploading images to the "uploaded" container](Images/upload-images-2.png)
 
@@ -356,21 +364,15 @@ Your function is configured to listen for changes to the blob container named "u
 
 	> It may take a minute or more for all of the images to appear in the container. If necessary, click **Refresh** every few seconds until you see all seven images.
 
-    ![Images uploaded to the "accepted" container](Images/accepted-images.png)
+    ![Images in the "accepted" container](Images/accepted-images.png)
 
-    _Images uploaded to the "accepted" container_
+    _Images in the "accepted" container_
 
-1. Close the blade for the "accepted" container and open the blade for the "rejected" container.
+1. Close the blade for the "accepted" container and open the blade for the "rejected" container. Verify that the "rejected" container holds one image. **This image was classified as adult or racy (or both) by the Computer Vision API**.
 
-    ![Opening the "rejected" container](Images/open-rejected-container.png)
+    ![Images in the "rejected" container](Images/rejected-images.png)
 
-    _Opening the "rejected" container_
-
-1. Verify that the "rejected" container holds one image. **This image was classified as adult or racy (or both) by the Computer Vision API**.
-
-    ![Images uploaded to the "rejected" container](Images/rejected-images.png)
-
-    _Images uploaded to the "rejected" container_
+    _Images in the "rejected" container_
 
 The presence of seven images in the "accepted" container and one in the "rejected" container is proof that your Azure Function executed each time an image was uploaded to the "uploaded" container. If you would like, return to the BlobImageAnalysis function in the portal and click **Monitor**. You will see a log detailing each time the function executed.
 
@@ -423,4 +425,4 @@ This is just one example of how you can leverage Azure Functions to automate rep
 
 ---
 
-Copyright 2017 Microsoft Corporation. All rights reserved. Except where otherwise noted, these materials are licensed under the terms of the MIT License. You may use them according to the license as is most appropriate for your project. The terms of this license can be found at https://opensource.org/licenses/MIT.
+Copyright 2016 Microsoft Corporation. All rights reserved. Except where otherwise noted, these materials are licensed under the terms of the MIT License. You may use them according to the license as is most appropriate for your project. The terms of this license can be found at https://opensource.org/licenses/MIT.
